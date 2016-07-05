@@ -1,0 +1,12 @@
+com\mkyong\web\controller\Person.class
+com\mkyong\web\controller\Student.class
+model\RoleNode.class
+com\mkyong\web\controller\SessionSerializeController.class
+com\mkyong\web\controller\HelloController.class
+serializer\MessagePackSerializer.class
+model\Role.class
+model\StaffInfo.class
+com\mkyong\web\controller\MessagePackT.class
+util\SessionUtil.class
+com\mkyong\web\controller\Students.class
+model\StaffRight.class

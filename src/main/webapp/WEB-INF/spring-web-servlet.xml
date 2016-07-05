@@ -1,14 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="
-        http://www.springframework.org/schema/beans     
-        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-        http://www.springframework.org/schema/mvc 
-        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
-        http://www.springframework.org/schema/context 
-        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
 	<context:component-scan base-package="com.mkyong.web" />
 
@@ -25,5 +36,31 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
  
 	<mvc:annotation-driven />
+<!--
+	<bean id="redisValSerializer" class="serializer.MessagePackRedisSerializer"></bean>
+	-->
+	<bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+		  <!--p:defaultRedisSerializer-ref="redisValSerializer">-->
+		<!--
+		<property name="defaultRedisSerializer" value="redisValSerializer"></property>
+		-->
+		<property name="maxInactiveIntervalInSeconds" value="200"></property>
+		<property name="redisNamespace" value="hmp"></property>
+		<!--
+		<property name="defaultRedisSerializer" value="org.springframework.data.redis.util.JdkSerializationRedisSerializer2"></property>
+
+		<property name="defaultRedisSerializer" value="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"></property>
+		-->
+	</bean>
+
+	<bean id="redispoolConfig" class="redis.clients.jedis.JedisPoolConfig" />
+	<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="database" value="2"></property>
+		<property name="hostName" value="redis.cim.in" />
+		<property name="port" value="6379" />
+		<property name="poolConfig" ref="redispoolConfig"></property>
+	</bean>
+
+	<bean id="messagePack" class="org.msgpack.MessagePack"/>
 	
 </beans>
